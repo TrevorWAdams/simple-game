@@ -1,11 +1,11 @@
 import React from "react"
-import CountDown from "../components/CountDown"
+import Timer from "../components/Timer"
 
 export default () => {
 
   return (
     <div>
-      <CountDown />
+      <Timer />
     </div>
   )
 }

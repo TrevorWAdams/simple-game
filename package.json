@@ -14,9 +14,11 @@
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
   },
   "dependencies": {
+    "@xstate/react": "^0.8.1",
     "gatsby": "^2.19.7",
     "react": "^16.12.0",
-    "react-dom": "^16.12.0"
+    "react-dom": "^16.12.0",
+    "xstate": "^4.7.8"
   },
   "devDependencies": {
     "prettier": "^1.19.1"

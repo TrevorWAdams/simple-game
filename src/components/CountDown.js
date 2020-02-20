@@ -1,49 +1,60 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
+import { useMachine } from "@xstate/react"
+import { Machine } from "xstate"
+
+
+const countDownMachine = Machine(
+  {
+    id: "countDown",
+    initial: "idle",
+    context: {
+      seconds: 5,
+    },
+    states: {
+      idle: {
+        on: {
+          NEXT: "next",
+          actions: ["onNext"],
+        },
+      },
+      next: {
+        on: {
+          NEXT: "next",
+          actions: ["onNext"],
+        },
+      },
+      done: {
+        type: "final",
+      },
+    },
+  },
+  {
+    actions: {
+      onNext: (context, event) => {
+        console.log("onNext", context, event)
+      },
+    },
+  }
+)
 
 const CountDown = () => {
-  const time = 5
-  const [seconds, setSeconds] = useState(time)
-  const [isActive, setIsActive] = useState(false)
-  const [game, setGame] = useState(false)
+ 
+  const [current, send] = useMachine(countDownMachine)
 
-  function start() {
-    setIsActive(true)
-  }
 
-  function go() {
-    setIsActive(false)
-    setGame(true)
-  }
+    useEffect(() => {
+      let interval = null
+     
+        interval = setInterval(() => {
+          setSeconds(seconds => seconds - 1)
+        }, 1000)
+    
+    }, [seconds])
 
-  function reset() {
-    setSeconds(time)
-    setIsActive(false)
-    setGame(false)
-  }
-
-  useEffect(() => {
-    let interval = null
-    if (seconds === 0) {
-      go()
-    }
-    if (isActive) {
-      interval = setInterval(() => {
-        setSeconds(seconds => seconds - 1)
-      }, 1000)
-    }
-
-    return () => clearInterval(interval)
-  }, [isActive, seconds])
-
-  
 
   return (
     <div>
-      <div>
-        {game ? <button onClick={reset}>Reset</button> : <button onClick={start}>START</button>}
-      </div>
-
-      {game ? <div>GAME</div> : <div>{seconds}</div>}
+      <div>{seconds}</div>
     </div>
   )
 }
